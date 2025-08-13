@@ -11,3 +11,4 @@ class AboutModel(db.Model):
     cv = db.Column(db.String, nullable=False)
 
     qualifications = db.relationship("QualificationModel", back_populates="about", lazy="dynamic")
+    institutes = db.relationship("InstituteModel", back_populates="about", lazy="dynamic")

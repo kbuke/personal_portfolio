@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates_schema, ValidationError
 
 class AboutSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -12,8 +12,31 @@ class PlainQualificationSchema(Schema):
     id = fields.Int(dump_only=True)
     qualification_title = fields.Str(required=True)
     qualifciation_img = fields.Str(required=True)
-    qualification_date = fields.Str(required=True) 
+    qualification_date = fields.Date(required=True, format="%Y-%m-%d")
+
+class PlainInstituteSchema(Schema):
+    id = fields.Int(dump_only=True)
+    institute_name = fields.Str(required=True)
+    institute_img = fields.Str(required=True)
+    position = fields.Str(required=True)
+    start_date = fields.Date(required=True, format="%Y-%m-%d")
+    end_date = fields.Date(required=True, format="%Y-%m-%d")
+
+    @validates_schema
+    def validate_dates(self, data, **kwargs):
+        start = data.get("start_date")
+        end = data.get("end_date")
+        
+        if start and end and end <= start:
+            raise ValidationError("End date must be after the start date", field_name="end_date")
+
+class InstitutesSchema(PlainInstituteSchema):
+    about_id = fields.Int(required=True, load_only=True)
+    about = fields.Nested(AboutSchema(), dump_only=True)
 
 class QualificationSchema(PlainQualificationSchema):
     about_id = fields.Int(required=True, load_only=True)
     about = fields.Nested(AboutSchema(), dump_only=True)
+
+    institute_id = fields.Int(required=True, load_only=True)
+    institute = fields.Nested(InstitutesSchema(), dump_only=True)

@@ -10,5 +10,7 @@ class QualificationModel(db.Model):
     qualification_date = db.Column(db.Date, nullable=False) #this will only store YY.MM.DD
     
     about_id = db.Column(db.Integer, db.ForeignKey("intro.id"), unique=False, nullable=False)
-
     about = db.relationship("AboutModel", back_populates="qualifications")
+
+    institute_id = db.Column(db.Integer, db.ForeignKey("institutes.id"), unique=False, nullable=False)
+    institute = db.relationship("InstituteModel", back_populates="qualifications")
