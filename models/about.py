@@ -9,3 +9,5 @@ class AboutModel(db.Model):
     picture = db.Column(db.String, nullable=False)
     introduction = db.Column(db.String, nullable=False)
     cv = db.Column(db.String, nullable=False)
+
+    qualifications = db.relationship("QualificationModel", back_populates="about", lazy="dynamic")
