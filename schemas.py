@@ -8,6 +8,13 @@ class AboutSchema(Schema):
     introduction = fields.Str(required=True)
     cv = fields.Str(required=True)
 
+class AboutUpdateSchema(Schema):
+    first_name = fields.Str()
+    last_name = fields.Str()
+    picture = fields.Str()
+    introduction = fields.Str()
+    cv = fields.Str()
+
 class PlainQualificationSchema(Schema):
     id = fields.Int(dump_only=True)
     qualification_title = fields.Str(required=True)

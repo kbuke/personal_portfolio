@@ -3,7 +3,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort 
 
-from schemas import AboutSchema
+from schemas import AboutSchema, AboutUpdateSchema
 from models import AboutModel
 
 from db import db
@@ -17,7 +17,23 @@ class About(MethodView):
     @blp.response(200, AboutSchema)
     def get(self, about_id):
         about = AboutModel.query.get_or_404(about_id)
-        return about 
+        return about
+    
+    @blp.arguments(AboutUpdateSchema)
+    @blp.response(200, AboutSchema)
+    def put(self, about_data, about_id):
+        about = AboutModel.query.get(about_id)
+        if about:
+            about.first_name = about_data["first_name"]
+            about.last_name = about_data["last_name"]
+            about.picture = about_data["picture"]
+            about.introduction = about_data["introduction"]
+            about.cv = about_data["cv"]
+        else:
+            about = AboutModel(id=about_id, **about_data)
+        db.session.add(about)
+        db.session.commit()
+        return about
 
 @blp.route("/about")
 class AboutList(MethodView):
