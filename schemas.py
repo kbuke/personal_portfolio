@@ -41,6 +41,15 @@ class InstitutesSchema(PlainInstituteSchema):
     about_id = fields.Int(required=True, load_only=True)
     about = fields.Nested(AboutSchema(), dump_only=True)
 
+class InstituteUpdateSchema(Schema):
+    id = fields.Int()
+    institute_name = fields.Str()
+    institute_img = fields.Str()
+    position = fields.Str()
+    start_date = fields.Date()
+    end_date = fields.Date()
+    about_id = fields.Int()
+
 class QualificationSchema(PlainQualificationSchema):
     about_id = fields.Int(required=True, load_only=True)
     about = fields.Nested(AboutSchema(), dump_only=True)
