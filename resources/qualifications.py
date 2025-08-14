@@ -13,6 +13,13 @@ from sqlalchemy.exc import SQLAlchemyError
 
 blp = Blueprint("qualifications", __name__, description="Operations on qualifications")
 
+@blp.route("/qualification/<string:qualification_id>")
+class Qualification(MethodView):
+    @blp.response(200, QualificationSchema)
+    def get(self, qualification_id):
+        qualification = QualificationModel.query.get_or_404(qualification_id)
+        return qualification
+
 @blp.route("/qualification")
 class QualificationList(MethodView):
     @blp.response(200, QualificationSchema(many=True))

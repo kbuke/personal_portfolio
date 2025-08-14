@@ -56,3 +56,10 @@ class QualificationSchema(PlainQualificationSchema):
 
     institute_id = fields.Int(required=True, load_only=True)
     institute = fields.Nested(InstitutesSchema(), dump_only=True)
+
+class QualificationUpdateSchema(Schema):
+    qualification_title = fields.Str()
+    qualifciation_img = fields.Str()
+    qualification_date = fields.Date()
+    about_id = fields.Int()
+    institute_id = fields.Int()
