@@ -4,6 +4,7 @@ from flask_smorest import Api
 from resources.about import blp as AboutBlueprint 
 from resources.qualifications import blp as QualificationBlueprint
 from resources.institutes import blp as InstituteBlueprint
+from resources.project import blp as ProjectBlueprint
 
 from db import db
 import os 
@@ -30,5 +31,6 @@ def create_app(db_url=None):
     api.register_blueprint(AboutBlueprint)
     api.register_blueprint(QualificationBlueprint)
     api.register_blueprint(InstituteBlueprint)
+    api.register_blueprint(ProjectBlueprint)
 
     return app

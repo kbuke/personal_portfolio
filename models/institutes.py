@@ -15,3 +15,4 @@ class InstituteModel(db.Model):
     about = db.relationship("AboutModel", back_populates="institutes")
 
     qualifications = db.relationship("QualificationModel", back_populates="institute", lazy="dynamic")
+    projects = db.relationship("ProjectModel", back_populates="institute", lazy="dynamic")

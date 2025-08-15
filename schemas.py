@@ -15,6 +15,7 @@ class AboutUpdateSchema(Schema):
     introduction = fields.Str()
     cv = fields.Str()
 
+#---------------------------------- Plain Schemas ----------------------------------
 class PlainQualificationSchema(Schema):
     id = fields.Int(dump_only=True)
     qualification_title = fields.Str(required=True)
@@ -36,7 +37,24 @@ class PlainInstituteSchema(Schema):
         
         if start and end and end <= start:
             raise ValidationError("End date must be after the start date", field_name="end_date")
+        
+class PlainProjectSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str(required=True)
+    title_img = fields.Str()
+    title_video = fields.Str()
+    start_date = fields.Date(required = True, format="%Y-%m-%d")
+    end_date = fields.Date(allow_none=True, format="%Y-%m-%d")
 
+    @validates_schema
+    def validate_end_date(self, data, **kwargs):
+        start = data.get("start_date")
+        end = data.get("end_date")
+
+        if end is not None and start and end <= start:
+            raise ValidationError("End date must come after start date", field_name="end_date")
+
+#---------------------------------- Specific Schemas ----------------------------------
 class InstitutesSchema(PlainInstituteSchema):
     about_id = fields.Int(required=True, load_only=True)
     about = fields.Nested(AboutSchema(), dump_only=True)
@@ -63,3 +81,7 @@ class QualificationUpdateSchema(Schema):
     qualification_date = fields.Date()
     about_id = fields.Int()
     institute_id = fields.Int()
+
+class ProjectSchema(PlainProjectSchema):
+    institute_id = fields.Int(required=True, load_only=True)
+    institute = fields.Nested(InstitutesSchema(), dump_only=True)
