@@ -59,6 +59,13 @@ class PlainTechSchema(Schema):
     name = fields.Str(required=True)
     image = fields.Str(required=True)
 
+class PlainParagraphSchema(Schema):
+    id = fields.Int(dump_only=True)
+    title = fields.Str()
+    text = fields.Str(required=True)
+    img_1 = fields.Str()
+    img_2 = fields.Str()
+
 #---------------------------------- Specific Schemas ----------------------------------
 class InstitutesSchema(PlainInstituteSchema):
     about_id = fields.Int(required=True, load_only=True)
@@ -91,6 +98,11 @@ class ProjectSchema(PlainProjectSchema):
     institute_id = fields.Int(required=True, load_only=True)
     institute = fields.Nested(InstitutesSchema(), dump_only=True)
     tech = fields.List(fields.Nested(PlainTechSchema()), dump_only=True)
+    paragraph = fields.List(fields.Nested(PlainParagraphSchema()), dump_only = True)
 
 class TechSchema(PlainTechSchema):
     projects = fields.List(fields.Nested(PlainProjectSchema()), dump_only = True)
+
+class ParagraphSchema(PlainParagraphSchema):
+    project_id = fields.Int(required=True, load_only=True)
+    project = fields.Nested(ProjectSchema(), dump_only=True)

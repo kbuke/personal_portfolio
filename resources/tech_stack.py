@@ -5,7 +5,7 @@ from schemas import TechSchema
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 blp = Blueprint("Tech", "tech", description="Operations on tech stac")
 
@@ -23,9 +23,14 @@ class TechStack(MethodView):
         try:
             db.session.add(tech)
             db.session.commit()
-        except SQLAlchemyError:
-            abort(500, message="An error occured when inserting this tech")
-        return tech 
+        except IntegrityError as e:
+            db.session.rollback()
+            abort(400, message=f"Integrity error: {str(e.orig)}")
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            abort(500, message=f"Database error: {str(e)}")
+
+        return tech
 
 @blp.route("/tech/<string:tech_id>/project/<project_id>")
 class LinkTechToProject(MethodView):

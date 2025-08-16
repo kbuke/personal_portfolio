@@ -6,6 +6,7 @@ from resources.qualifications import blp as QualificationBlueprint
 from resources.institutes import blp as InstituteBlueprint
 from resources.project import blp as ProjectBlueprint
 from resources.tech_stack import blp as TechBluePrint
+from resources.paragraph import blp as ParagraphBluePrint
 
 from db import db
 import os 
@@ -34,5 +35,6 @@ def create_app(db_url=None):
     api.register_blueprint(InstituteBlueprint)
     api.register_blueprint(ProjectBlueprint)
     api.register_blueprint(TechBluePrint)
+    api.register_blueprint(ParagraphBluePrint)
 
     return app

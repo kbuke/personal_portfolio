@@ -22,3 +22,5 @@ class ProjectModel(db.Model):
 
     # many-to-many relationship with tech
     tech = db.relationship("TechModel", back_populates = "projects", secondary = "project_tech")
+
+    paragraph = db.relationship("ParagraphModel", back_populates="project", lazy="dynamic")
