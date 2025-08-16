@@ -26,3 +26,19 @@ class TechStack(MethodView):
         except SQLAlchemyError:
             abort(500, message="An error occured when inserting this tech")
         return tech 
+
+@blp.route("/tech/<string:tech_id>/project/<project_id>")
+class LinkTechToProject(MethodView):
+    @blp.response(201, TechSchema)
+    def post(self, tech_id, project_id):
+        tech = TechModel.query.get_or_404(tech_id)
+        project = ProjectModel.query.get_or_404(project_id)
+
+        tech.projects.append(project)
+
+        try:
+            db.session.add(tech)
+            db.session.commit()
+        except SQLAlchemyError:
+            abort(500, message="An error occured when inserting the tech")
+        return tech 

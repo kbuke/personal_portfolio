@@ -54,6 +54,11 @@ class PlainProjectSchema(Schema):
         if end is not None and start and end <= start:
             raise ValidationError("End date must come after start date", field_name="end_date")
 
+class PlainTechSchema(Schema):
+    id = fields.Int(dump_only = True)
+    name = fields.Str(required=True)
+    image = fields.Str(required=True)
+
 #---------------------------------- Specific Schemas ----------------------------------
 class InstitutesSchema(PlainInstituteSchema):
     about_id = fields.Int(required=True, load_only=True)
@@ -85,3 +90,7 @@ class QualificationUpdateSchema(Schema):
 class ProjectSchema(PlainProjectSchema):
     institute_id = fields.Int(required=True, load_only=True)
     institute = fields.Nested(InstitutesSchema(), dump_only=True)
+    tech = fields.List(fields.Nested(PlainTechSchema()), dump_only=True)
+
+class TechSchema(PlainTechSchema):
+    projects = fields.List(fields.Nested(PlainProjectSchema()), dump_only = True)

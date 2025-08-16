@@ -19,3 +19,6 @@ class ProjectModel(db.Model):
     # one-to-many; where project is the one
     institute_id = db.Column(db.Integer, db.ForeignKey("institutes.id"), unique = False, nullable = False)
     institute = db.relationship("InstituteModel", back_populates="projects")
+
+    # many-to-many relationship with tech
+    tech = db.relationship("TechModel", back_populates = "projects", secondary = "project_tech")
