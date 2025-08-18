@@ -14,6 +14,12 @@ blp = Blueprint("points", __name__, description = "Operations on project points"
 
 @blp.route("/points/<string:point_id>")
 class Point(MethodView):
+    def delete(self, point_id):
+        point = PointsModel.query.get_or_404(point_id)
+        db.session.delete(point)
+        db.session.commit()
+        return {"message": "Point deleted"}
+
     @blp.arguments(ProjectPointUpdateSchema)
     @blp.response(200, ProjectPointSchema)
     def put(self, point_data, point_id):
