@@ -115,8 +115,8 @@ class ParagraphSchema(PlainParagraphSchema):
 class ParagraphUpdateSchema(Schema):
     title = fields.Str()
     text = fields.Str()
-    img_1 = fields.Str()
-    img_2 = fields.Str()
+    img_1 = fields.Str(allow_none=True)
+    img_2 = fields.Str(allow_none=True)
     project_id = fields.Int()
 
 class ProjectPointSchema(PlainProjectPointSchema):
