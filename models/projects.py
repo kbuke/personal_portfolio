@@ -24,3 +24,5 @@ class ProjectModel(db.Model):
     tech = db.relationship("TechModel", back_populates = "projects", secondary = "project_tech")
 
     paragraph = db.relationship("ParagraphModel", back_populates="project", lazy="dynamic")
+
+    points = db.relationship("PointsModel", back_populates = "project", lazy = "dynamic")
