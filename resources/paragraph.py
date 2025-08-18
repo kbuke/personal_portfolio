@@ -12,6 +12,14 @@ from sqlalchemy.exc import SQLAlchemyError
 
 blp = Blueprint("paragraphs", __name__, description = "Operations on project paragraphs")
 
+@blp.route("/paragraphs/<string:paragraph_id>")
+class Paragraph(MethodView):
+    def delete(self, paragraph_id):
+        paragraph = ParagraphModel.query.get_or_404(paragraph_id)
+        db.session.delete(paragraph)
+        db.session.commit()
+        return {"message": "Paragraph deleted"}
+
 @blp.route("/paragraphs")
 class ParagraphList(MethodView):
     @blp.response(200, ParagraphSchema(many=True))

@@ -18,7 +18,7 @@ class Point(MethodView):
     def get(self, point_id):
         point = PointsModel.query.get_or_404(point_id)
         return point
-    
+ 
     def delete(self, point_id):
         point = PointsModel.query.get_or_404(point_id)
         db.session.delete(point)
@@ -37,7 +37,6 @@ class Point(MethodView):
         db.session.add(point)
         db.session.commit()
         return point
-
 
 @blp.route("/points")
 class PointsList(MethodView):

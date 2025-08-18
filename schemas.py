@@ -61,10 +61,10 @@ class PlainTechSchema(Schema):
 
 class PlainParagraphSchema(Schema):
     id = fields.Int(dump_only=True)
-    title = fields.Str()
+    title = fields.Str(allow_none=True)
     text = fields.Str(required=True)
-    img_1 = fields.Str()
-    img_2 = fields.Str()
+    img_1 = fields.Str(allow_none=True)
+    img_2 = fields.Str(allow_none=True)
 
 class PlainProjectPointSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -110,7 +110,14 @@ class TechSchema(PlainTechSchema):
 
 class ParagraphSchema(PlainParagraphSchema):
     project_id = fields.Int(required=True, load_only=True)
-    project = fields.Nested(ProjectSchema(), dump_only=True)
+    # project = fields.Nested(ProjectSchema(), dump_only=True)
+
+class ParagraphUpdateSchema(Schema):
+    title = fields.Str()
+    text = fields.Str()
+    img_1 = fields.Str()
+    img_2 = fields.Str()
+    project_id = fields.Int()
 
 class ProjectPointSchema(PlainProjectPointSchema):
     project_id = fields.Int(required=True, load_only=True)
