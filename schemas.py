@@ -114,3 +114,7 @@ class ParagraphSchema(PlainParagraphSchema):
 
 class ProjectPointSchema(PlainProjectPointSchema):
     project_id = fields.Int(required=True, load_only=True)
+
+class ProjectPointUpdateSchema(Schema):
+    point = fields.Str()
+    project_id = fields.Int()

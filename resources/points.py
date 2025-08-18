@@ -2,7 +2,7 @@ from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 
-from schemas import ProjectPointSchema
+from schemas import ProjectPointSchema, ProjectPointUpdateSchema
 
 from models import PointsModel
 
@@ -12,8 +12,28 @@ from sqlalchemy.exc import SQLAlchemyError
 
 blp = Blueprint("points", __name__, description = "Operations on project points")
 
+@blp.route("/points/<string:point_id>")
+class Point(MethodView):
+    @blp.arguments(ProjectPointUpdateSchema)
+    @blp.response(200, ProjectPointSchema)
+    def put(self, point_data, point_id):
+        point = PointsModel.query.get(point_id)
+        if point:
+            point.point = point_data["point"]
+            point.project_id = point_data["project_id"]
+        else:
+            point = PointsModel(id=point_id, **point_data)
+        db.session.add(point)
+        db.session.commit()
+        return point
+
+
 @blp.route("/points")
 class PointsList(MethodView):
+    @blp.response(200, ProjectPointSchema(many=True))
+    def get(self):
+        return PointsModel.query.all()
+
     @blp.arguments(ProjectPointSchema)
     @blp.response(201, ProjectPointSchema)
     def post(self, point_data):
